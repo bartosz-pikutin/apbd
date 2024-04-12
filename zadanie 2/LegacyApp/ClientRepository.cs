@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.AccessControl;
 using System.Threading;
+using LegacyApp.Interfaces;
 
 namespace LegacyApp
 {
     public class ClientRepository
     {
+        
+        
+        
         /// <summary>
         /// This collection is used to simulate remote database
         /// </summary>
@@ -27,7 +32,7 @@ namespace LegacyApp
         /// Simulating fetching a client from remote database
         /// </summary>
         /// <returns>Returning client object</returns>
-        internal Client GetById(int clientId)
+        public Client GetById(int clientId)
         {
             int randomWaitTime = new Random().Next(2000);
             Thread.Sleep(randomWaitTime);
@@ -37,5 +42,11 @@ namespace LegacyApp
 
             throw new ArgumentException($"User with id {clientId} does not exist in database");
         }
+
+        public string checkImportance(Client client)
+        {
+            return client.Type;
+        }
+        
     }
 }

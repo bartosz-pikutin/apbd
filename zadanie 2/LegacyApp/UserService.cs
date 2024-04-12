@@ -1,24 +1,36 @@
 ﻿using System;
+using LegacyApp.Implementations;
+using LegacyApp.Interfaces;
 
 namespace LegacyApp
 {
     public class UserService
     {
+        IUserDataValidation _userDataValidation;
+
+        public UserService()
+        {
+            _userDataValidation = new UserDataValidation();
+        }
+        public UserService(IUserDataValidation userDataValidation)
+        {
+            _userDataValidation = new UserDataValidation();
+        }
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
-            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
+            if (!_userDataValidation.checkIfFirstNameValid(firstName) || !_userDataValidation.checkIfLastNameValid(lastName))
             {
                 return false;
             }
 
-            if (!email.Contains("@") && !email.Contains("."))
+            if (!_userDataValidation.checkIfEmailHasAt(email) && !_userDataValidation.checkIfEmailHasDot(email))
             {
                 return false;
             }
 
             var now = DateTime.Now;
             int age = now.Year - dateOfBirth.Year;
-            if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
+            if (_userDataValidation.checkIfDecreaseAge(dateOfBirth)) age--;
 
             if (age < 21)
             {
@@ -36,7 +48,7 @@ namespace LegacyApp
                 FirstName = firstName,
                 LastName = lastName
             };
-
+        
             if (client.Type == "VeryImportantClient")
             {
                 user.HasCreditLimit = false;
