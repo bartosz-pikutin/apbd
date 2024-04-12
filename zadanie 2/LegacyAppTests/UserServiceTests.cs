@@ -61,24 +61,7 @@ public class UserServiceTests
         //Assert
         Assert.Equal(false, result);
     }
-
-    /*public void idk()
-    {
-        //Arrange
-        string firstName = "John";
-        string lastName = null;
-        string email = "doe.@gmail.com";
-        DateTime birthDate = new DateTime(year: 1980, month: 5, day: 5);
-        int clientId = 1;
-        var service = new UserService();
-        
-        //Act
-        bool result = service.AddUser(firstName, lastName, email, birthDate, clientId);
-        
-        //Assert
-        Assert.Equal(false, result);
-        
-    }*/
+    
 
     [Fact]
     public void AddUser_Should_Be_False_When_Age_Is_Below_21()
