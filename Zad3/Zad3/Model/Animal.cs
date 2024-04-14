@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Animal.Model;
+namespace Zad3.Model;
 
 public class Animal
 {
