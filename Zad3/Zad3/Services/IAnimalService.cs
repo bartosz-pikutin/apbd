@@ -1,8 +1,8 @@
-using
+using Zad3.Model;
 
 namespace Zad3.Services;
 
-public class IAnimalService
+public interface IAnimalService
 {
     IEnumerable<Animal> GetAnimal();
     int CreateAnimal(Animal animal);

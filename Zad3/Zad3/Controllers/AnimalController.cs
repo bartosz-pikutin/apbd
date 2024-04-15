@@ -8,11 +8,11 @@ namespace AnimalControllers.Controllers;
 [ApiController]
 public class AnimalController : ControllerBase
 {
-    private IStudentsService _studentsService;
+    private IAnimalService _animalService;
     
-    public StudentsController(IStudentsService studentsService)
+    public AnimalController(IAnimalService animalService)
     {
-        _studentsService = studentsService;
+        _animalService = animalService;
     }
     
     /// <summary>
@@ -22,8 +22,8 @@ public class AnimalController : ControllerBase
     [HttpGet]
     public IActionResult GetStudents()
     {
-        var students = _studentsService.GetStudents();
-        return Ok(students);
+        var animals = _animalService.GetAnimal();
+        return Ok(animals);
     }
     
     /// <summary>
@@ -31,18 +31,7 @@ public class AnimalController : ControllerBase
     /// </summary>
     /// <param name="id">Id of a student</param>
     /// <returns>Student</returns>
-    [HttpGet("{id:int}")]
-    public IActionResult GetStudent(int id)
-    {
-        var student = _studentsService.GetStudent(id);
 
-        if (student==null)
-        {
-            return NotFound("Student not found");
-        }
-        
-        return Ok(student);
-    }
     
     /// <summary>
     /// Endpoint used to create a student.
@@ -50,9 +39,9 @@ public class AnimalController : ControllerBase
     /// <param name="student">New student data</param>
     /// <returns>201 Created</returns>
     [HttpPost]
-    public IActionResult CreateStudent(Student student)
+    public IActionResult CreateAnimal(Animal animal)
     {
-        var affectedCount = _studentsService.CreateStudent(student);
+        var affectedCount = _animalService.CreateAnimal(animal);
         return StatusCode(StatusCodes.Status201Created);
     }
     
@@ -63,9 +52,9 @@ public class AnimalController : ControllerBase
     /// <param name="student">204 No Content</param>
     /// <returns></returns>
     [HttpPut("{id:int}")]
-    public IActionResult UpdateStudent(int id, Student student)
+    public IActionResult UpdateStudent(int id, Animal animal)
     {
-        var affectedCount = _studentsService.UpdateStudent(student);
+        var affectedCount = _animalService.UpdateAnimal(animal);
         return NoContent();
     }
     
@@ -75,9 +64,9 @@ public class AnimalController : ControllerBase
     /// <param name="id">Id of a student</param>
     /// <returns>204 No Content</returns>
     [HttpDelete("{id:int}")]
-    public IActionResult DeleteStudent(int id)
+    public IActionResult DeleteAnimal(int id)
     {
-        var affectedCount = _studentsService.DeleteStudent(id);
+        var affectedCount = _animalService.DeleteAnimal(id);
         return NoContent();
     }
 }

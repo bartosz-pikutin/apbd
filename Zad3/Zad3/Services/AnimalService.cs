@@ -15,7 +15,7 @@ public class AnimalService : IAnimalService
     public IEnumerable<Animal> GetAnimals()
     {
         //Business logic
-        return _animalRepository.GetAnimals();
+        return _animalRepository.GetAnimal();
     }
     
     public int CreateAnimal(Animal animal)
