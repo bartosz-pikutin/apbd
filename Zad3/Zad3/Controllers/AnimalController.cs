@@ -16,27 +16,21 @@ public class AnimalController : ControllerBase
     }
     
     /// <summary>
-    /// Endpoints used to return list of students.
+    /// Endpoints used to return list of animals.
     /// </summary>
-    /// <returns>List of students</returns>
-    [HttpGet]
-    public IActionResult GetStudents()
+    /// <param name="orderBy"></param>
+    /// <returns>List of animals</returns>
+    [HttpGet("{orderBy}")]
+    public IActionResult GetAnimal(String orderBy = "Name")
     {
-        var animals = _animalService.GetAnimal();
+        var animals = _animalService.GetAnimal(orderBy);
         return Ok(animals);
     }
-    
-    /// <summary>
-    /// Endpoint used to return a single student.
-    /// </summary>
-    /// <param name="id">Id of a student</param>
-    /// <returns>Student</returns>
 
-    
     /// <summary>
-    /// Endpoint used to create a student.
+    /// Endpoint used to create an animal.
     /// </summary>
-    /// <param name="student">New student data</param>
+    /// <param name="animal">New animal data</param>
     /// <returns>201 Created</returns>
     [HttpPost]
     public IActionResult CreateAnimal(Animal animal)
@@ -46,13 +40,13 @@ public class AnimalController : ControllerBase
     }
     
     /// <summary>
-    /// Endpoint used to update a student.
+    /// Endpoint used to update an animal.
     /// </summary>
-    /// <param name="id">Id of a student</param>
-    /// <param name="student">204 No Content</param>
+    /// <param name="id">Id of an animal</param>
+    /// <param name="animal">204 No Content</param>
     /// <returns></returns>
     [HttpPut("{id:int}")]
-    public IActionResult UpdateStudent(int id, Animal animal)
+    public IActionResult UpdateAnimal(int id, Animal animal)
     {
         var affectedCount = _animalService.UpdateAnimal(animal);
         return NoContent();

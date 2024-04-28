@@ -12,10 +12,10 @@ public class AnimalService : IAnimalService
         _animalRepository = animalRepository;
     }
 
-    public IEnumerable<Animal> GetAnimals()
+    public IEnumerable<Animal> GetAnimal(String orderBy)
     {
         //Business logic
-        return _animalRepository.GetAnimal();
+        return _animalRepository.GetAnimal(orderBy);
     }
     
     public int CreateAnimal(Animal animal)

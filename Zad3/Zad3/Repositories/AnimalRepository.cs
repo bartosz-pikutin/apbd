@@ -6,26 +6,25 @@ namespace Zad3.Repositories;
 public class AnimalRepository : IAnimalRepository
 {
     private IConfiguration _configuration;
-    
     public AnimalRepository(IConfiguration configuration)
     {
         _configuration = configuration;
     }
-    
-    public IEnumerable<Animal> GetAnimal()
+    String connectionString = "Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=s24819;Integrated Security=True";
+    public IEnumerable<Animal> GetAnimal(string orderBy)
     {
-        using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        using var con = new SqlConnection(connectionString);
         con.Open();
-        
+
         using var cmd = new SqlCommand();
         cmd.Connection = con;
-        cmd.CommandText = "SELECT IdAnimal, Name, Description, Category, Area FROM Animal ORDER BY IdAnimal";
-        
+        cmd.CommandText = $"SELECT IdAnimal, Name, Description, Category, Area FROM Animal ORDER BY {orderBy}";
+
         var dr = cmd.ExecuteReader();
         var animals = new List<Animal>();
         while (dr.Read())
         {
-            var grade = new Animal()
+            var animal = new Animal()
             {
                 IdAnimal = (int)dr["IdAnimal"],
                 Name = dr["Name"].ToString(),
@@ -33,20 +32,20 @@ public class AnimalRepository : IAnimalRepository
                 Category = dr["Category"].ToString(),
                 Area = dr["Area"].ToString()
             };
-            animals.Add(grade);
+            animals.Add(animal);
         }
-        
+
         return animals;
     }
     
     public int CreateAnimal(Animal animal)
     {
-        using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        using var con = new SqlConnection(connectionString);
         con.Open();
         
         using var cmd = new SqlCommand();
         cmd.Connection = con;
-        cmd.CommandText = "INSERT INTO Student(IdAnimal, Name, Description, Category, Area) VALUES(@IdAnimal, @Name, @Description, @Category, @Area)";
+        cmd.CommandText = "INSERT INTO Animal(IdAnimal, Name, Description, Category, Area) VALUES(@IdAnimal, @Name, @Description, @Category, @Area)";
         cmd.Parameters.AddWithValue("@IdAnimal", animal.IdAnimal);
         cmd.Parameters.AddWithValue("@Name", animal.Name);
         cmd.Parameters.AddWithValue("@Description", animal.Description);
@@ -60,13 +59,13 @@ public class AnimalRepository : IAnimalRepository
     
     public int DeleteAnimal(int id)
     {
-        using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        using var con = new SqlConnection(connectionString);
         con.Open();
         
         using var cmd = new SqlCommand();
         cmd.Connection = con;
         cmd.CommandText = "DELETE FROM Animal WHERE IdAnimal = @IdAnimal";
-        cmd.Parameters.AddWithValue("@IdAniaml", id);
+        cmd.Parameters.AddWithValue("@IdAnimal", id);
         
         var affectedCount = cmd.ExecuteNonQuery();
         return affectedCount;
@@ -74,12 +73,12 @@ public class AnimalRepository : IAnimalRepository
 
     public int UpdateAnimal(Animal animal)
     {
-        using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        using var con = new SqlConnection(connectionString);
         con.Open();
         
         using var cmd = new SqlCommand();
         cmd.Connection = con;
-        cmd.CommandText = "UPDATE Student SET IdAnimal=@IdAnimal, Name=@Name, Description=@Description, Category=@Category, Area=@Area WHERE IdAnimal = @IdAnimal";
+        cmd.CommandText = "UPDATE Animal SET IdAnimal=@IdAnimal, Name=@Name, Description=@Description, Category=@Category, Area=@Area WHERE IdAnimal = @IdAnimal";
         cmd.Parameters.AddWithValue("@IdAnimal", animal.IdAnimal);
         cmd.Parameters.AddWithValue("@Name", animal.Name);
         cmd.Parameters.AddWithValue("@Description", animal.Description);
