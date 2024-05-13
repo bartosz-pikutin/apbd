@@ -14,53 +14,37 @@ public class WareHouseController : ControllerBase
     {
         _wareHouseService = wareHouseService;
     }
-    
-    /// <summary>
-    /// Endpoints used to return list of animals.
-    /// </summary>
-    /// <param name="orderBy"></param>
-    /// <returns>List of animals</returns>
-    [HttpGet("{orderBy}")]
-    public IActionResult GetAnimal(String orderBy = "Name")
-    {
-        var animals = _wareHouseService.GetAnimal(orderBy);
-        return Ok(animals);
-    }
+
 
     /// <summary>
-    /// Endpoint used to create an animal.
+    /// Endpoint used to run my endpoint.
     /// </summary>
-    /// <param name="animal">New animal data</param>
     /// <returns>201 Created</returns>
     [HttpPost]
-    public IActionResult CreateAnimal(Animal animal)
+    public IActionResult WareHouseRun(Zapytanie zapytanie)
     {
-        var affectedCount = _wareHouseService.CreateAnimal(animal);
+        var affectedCount = _wareHouseService.CreateWareHouse(zapytanie);
+        if (affectedCount == null)
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, "Failed to add product to Product_Warehouse.");
+        }
         return StatusCode(StatusCodes.Status201Created);
+
     }
     
-    /// <summary>
-    /// Endpoint used to update an animal.
-    /// </summary>
-    /// <param name="id">Id of an animal</param>
-    /// <param name="animal">204 No Content</param>
-    /// <returns></returns>
-    [HttpPut("{id:int}")]
-    public IActionResult UpdateAnimal(int id, Animal animal)
+    [HttpPost("AddProductToWarehouse")]
+    public IActionResult AddProductToWarehouse(Zapytanie zapytanie)
     {
-        var affectedCount = _wareHouseService.UpdateAnimal(animal);
-        return NoContent();
+        var result = _wareHouseService.AddProductToWarehouseProcedure(zapytanie);
+        if (result == null)
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, "Failed to add product to warehouse.");
+        }
+        else
+        {
+            return StatusCode(StatusCodes.Status201Created, result);
+        }
     }
+
     
-    /// <summary>
-    /// Endpoint used to delete a student.
-    /// </summary>
-    /// <param name="id">Id of a student</param>
-    /// <returns>204 No Content</returns>
-    [HttpDelete("{id:int}")]
-    public IActionResult DeleteAnimal(int id)
-    {
-        var affectedCount = _wareHouseService.DeleteAnimal(id);
-        return NoContent();
-    }
 }
